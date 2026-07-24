@@ -1,0 +1,5 @@
+CREATE TABLE materia (
+    id BIGSERIAL PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    cor VARCHAR(255)
+);
