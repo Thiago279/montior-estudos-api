@@ -4,6 +4,7 @@ import com.toma.monitor_estudos.domain.Materia;
 import com.toma.monitor_estudos.domain.SessaoEstudo;
 import com.toma.monitor_estudos.domain.StatusSessao;
 import com.toma.monitor_estudos.dto.estatisticas.*;
+import com.toma.monitor_estudos.exception.PeriodoInvalidoException;
 import com.toma.monitor_estudos.repository.SessaoEstudoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,6 +86,43 @@ public class EstatisticasService {
         );
     }
 
+    @Transactional(readOnly = true)
+    public EstatisticaPeriodoResponse obterEstatisticaPeriodo(LocalDate dataInicio, LocalDate dataFim){
+
+        LocalDate dataFimEfetiva = (dataFim != null) ? dataFim : LocalDate.now();
+
+        if(dataInicio.isAfter(dataFimEfetiva)){
+            throw new PeriodoInvalidoException(
+                    "A data final não pode ser anterior à data inicial."
+            );
+        }
+
+        LocalDateTime agora = LocalDateTime.now();
+        LocalDateTime inicioPeriodo = dataInicio.atStartOfDay();
+        LocalDateTime fimPeriodo =
+                (dataFim == null)
+                        ? LocalDateTime.now()
+                        : dataFim.atTime(LocalTime.MAX);
+
+        List<SessaoEstudo> sessoes = sessaoEstudoRepository.findByDataInicioBetween(inicioPeriodo, fimPeriodo);
+
+        long tempoTotalPeriodo = sessoes.stream()
+                .mapToLong(sessao -> calcularMinutosSessao(sessao, agora))
+                .sum();
+
+        long quantidadeSessoes = sessoes.size();
+
+        List<MateriaTempoResponse> materiasResumo = agruparMinutosPorMateria(sessoes, agora);
+
+        return new EstatisticaPeriodoResponse(
+                dataInicio,
+                dataFimEfetiva,
+                tempoTotalPeriodo,
+                quantidadeSessoes,
+                materiasResumo
+        );
+    }
+
     private SessaoResumoResponse mapearParaResumo(SessaoEstudo sessao, LocalDateTime agora) {
         boolean emAndamento = sessao.getDataFim() == null;
         StatusSessao status = emAndamento ? StatusSessao.EM_ANDAMENTO : StatusSessao.FINALIZADA;
@@ -115,25 +153,12 @@ public class EstatisticasService {
     }
 
     private DiaSemanaResponse gerarResumoDia(LocalDate dia, List<SessaoEstudo> todasSessoes, LocalDateTime agora) {
-        Map<Materia, Long> minutosPorMateria = new HashMap<>();
 
-        // 'for' para agrupar e somar os minutos por matéria
-        for (SessaoEstudo sessao : todasSessoes) {
-            if (sessao.getDataInicio().toLocalDate().equals(dia)) {
-                long minutos = calcularMinutosSessao(sessao, agora);
-                minutosPorMateria.merge(sessao.getMateria(), minutos, Long::sum);
-            }
-        }
-
-        // Stream para transformar o Map resultante na lista de DTOs
-        List<MateriaTempoResponse> materiasResumo = minutosPorMateria.entrySet().stream()
-                .map(entry -> new MateriaTempoResponse(
-                        entry.getKey().getId(),
-                        entry.getKey().getTitulo(),
-                        entry.getValue(),
-                        entry.getKey().getCor()
-                ))
+        List<SessaoEstudo> sessoesDoDia = todasSessoes.stream()
+                .filter(sessao -> sessao.getDataInicio().toLocalDate().equals(dia))
                 .toList();
+
+        List<MateriaTempoResponse> materiasResumo = agruparMinutosPorMateria(sessoesDoDia, agora);
 
         long tempoTotalDia = materiasResumo.stream()
                 .mapToLong(MateriaTempoResponse::tempoAcumuladoMinutos)
@@ -144,5 +169,23 @@ public class EstatisticasService {
                 .toUpperCase();
 
         return new DiaSemanaResponse(dia, nomeDia, tempoTotalDia, materiasResumo);
+    }
+
+    private List<MateriaTempoResponse> agruparMinutosPorMateria(List<SessaoEstudo> sessoes, LocalDateTime agora) {
+        Map<Materia, Long> minutosPorMateria = new HashMap<>();
+
+        for (SessaoEstudo sessao : sessoes) {
+            long minutos = calcularMinutosSessao(sessao, agora);
+            minutosPorMateria.merge(sessao.getMateria(), minutos, Long::sum);
+        }
+
+        return minutosPorMateria.entrySet().stream()
+                .map(entry -> new MateriaTempoResponse(
+                        entry.getKey().getId(),
+                        entry.getKey().getTitulo(),
+                        entry.getValue(),
+                        entry.getKey().getCor()
+                ))
+                .toList();
     }
 }

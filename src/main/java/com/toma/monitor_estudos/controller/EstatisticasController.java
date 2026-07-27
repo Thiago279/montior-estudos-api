@@ -2,6 +2,7 @@ package com.toma.monitor_estudos.controller;
 
 import com.toma.monitor_estudos.dto.erro.ErroResponse;
 import com.toma.monitor_estudos.dto.estatisticas.EstatisticaDiariaResponse;
+import com.toma.monitor_estudos.dto.estatisticas.EstatisticaPeriodoResponse;
 import com.toma.monitor_estudos.dto.estatisticas.EstatisticaSemanalResponse;
 import com.toma.monitor_estudos.service.EstatisticasService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -68,6 +69,22 @@ public class EstatisticasController {
     public ResponseEntity<EstatisticaSemanalResponse> obterSemanal(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data){
         EstatisticaSemanalResponse response = estatisticasService.obterEstatisticaSemanal(data);
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/periodo")
+    @Operation(summary = "Obtém estatísticas de período especificado", description = "Retorna a soma de minutos e o agrupamento por matérias para o período entre as datas informadas. Se data final for omitida, considera o dia atual.")
+    @ApiResponses({@ApiResponse(
+            responseCode = "200",
+            description = "Relatório do período gerado com sucesso"
+    ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Formato de data inválido. O parâmetro 'data' deve seguir o padrão ISO (YYYY-MM-DD)",
+                    content = @Content(schema = @Schema(implementation = ErroResponse.class))
+            )})
+    public ResponseEntity<EstatisticaPeriodoResponse> obterPeriodo(
+             @RequestParam(name = "inicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio, @RequestParam(name = "fim", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim){
+        EstatisticaPeriodoResponse response = estatisticasService.obterEstatisticaPeriodo(dataInicio, dataFim);
         return ResponseEntity.ok(response);
     }
 

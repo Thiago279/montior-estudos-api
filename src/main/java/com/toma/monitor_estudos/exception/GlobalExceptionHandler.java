@@ -83,6 +83,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ErroResponse> handlePeriodoInvalidoException(PeriodoInvalidoException ex, HttpServletRequest request){
+        ErroResponse erro = buildErroResponse(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage(),
+                request);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
     private ErroResponse buildErroResponse(HttpStatus status, String mensagem, HttpServletRequest request) {
         return  new ErroResponse(
                 LocalDateTime.now(),
