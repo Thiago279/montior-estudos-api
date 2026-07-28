@@ -44,12 +44,12 @@ Incompatibility of Flyway standard dependency + Spring Boot 4
 - Time period accepts optional end date (uses present time when no end date specified).
 - added validation for invalid time periods (end date before start date)
 - manual swagger tests passed
+- Implemented SessaoEstudoRepostory tests (@DataJpaTest, assertThat)
 
 ## Tomorrow
 - aprofundar em tests
 ## Next Week
 
-- periodic endpoint implementation
 - add and understand more unit tests
 - CI/CD configuration with github actions
 - maybe dev , prod , test profiles

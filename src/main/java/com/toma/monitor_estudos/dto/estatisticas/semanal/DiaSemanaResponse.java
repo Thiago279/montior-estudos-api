@@ -1,5 +1,6 @@
-package com.toma.monitor_estudos.dto.estatisticas;
+package com.toma.monitor_estudos.dto.estatisticas.semanal;
 
+import com.toma.monitor_estudos.dto.estatisticas.MateriaTempoResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;

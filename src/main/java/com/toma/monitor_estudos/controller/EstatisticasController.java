@@ -1,9 +1,9 @@
 package com.toma.monitor_estudos.controller;
 
 import com.toma.monitor_estudos.dto.erro.ErroResponse;
-import com.toma.monitor_estudos.dto.estatisticas.EstatisticaDiariaResponse;
-import com.toma.monitor_estudos.dto.estatisticas.EstatisticaPeriodoResponse;
-import com.toma.monitor_estudos.dto.estatisticas.EstatisticaSemanalResponse;
+import com.toma.monitor_estudos.dto.estatisticas.diaria.EstatisticaDiariaResponse;
+import com.toma.monitor_estudos.dto.estatisticas.periodo.EstatisticaPeriodoResponse;
+import com.toma.monitor_estudos.dto.estatisticas.semanal.EstatisticaSemanalResponse;
 import com.toma.monitor_estudos.service.EstatisticasService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

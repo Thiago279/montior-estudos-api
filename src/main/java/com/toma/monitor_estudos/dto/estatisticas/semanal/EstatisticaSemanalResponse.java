@@ -1,4 +1,4 @@
-package com.toma.monitor_estudos.dto.estatisticas;
+package com.toma.monitor_estudos.dto.estatisticas.semanal;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

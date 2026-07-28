@@ -28,7 +28,7 @@
 ## 🔜 v0.4.0 — Estatísticas Avançadas & Refatoração DTOs
 
 ### Estatísticas
-- [ ] Endpoint de estatísticas por período customizado:
+- [X] Endpoint de estatísticas por período customizado:
   `GET /estatisticas/periodo?inicio=YYYY-MM-DD&fim=YYYY-MM-DD`
   *(Substitui a necessidade de endpoints fixos por mês ou ano)*
 
