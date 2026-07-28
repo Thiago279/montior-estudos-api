@@ -16,8 +16,12 @@ public class Materia {
     public Materia(){
     }
 
-    public Materia( String titulo){
+    public Materia(String titulo){
         this.titulo = titulo;
+    }
+    public Materia(String titulo, String cor){
+        this.titulo = titulo;
+        this.cor = cor;
     }
 
     public Long getId() {

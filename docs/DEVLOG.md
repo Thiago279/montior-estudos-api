@@ -36,6 +36,17 @@ Incompatibility of Flyway standard dependency + Spring Boot 4
 
 - solved by loooking up on google and found new Dependency to be injected
 
+
+# Semana 03
+
+## DONE
+- Implemented periodic statistics endpoint.
+- Time period accepts optional end date (uses present time when no end date specified).
+- added validation for invalid time periods (end date before start date)
+- manual swagger tests passed
+
+## Tomorrow
+- aprofundar em tests
 ## Next Week
 
 - periodic endpoint implementation

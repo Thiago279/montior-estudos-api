@@ -22,9 +22,9 @@ public class SessaoEstudo {
     public SessaoEstudo(){
     }
 
-    public SessaoEstudo(LocalDateTime dataFim, LocalDateTime dataInicio, Materia materia) {
-        this.dataFim = dataFim;
+    public SessaoEstudo(LocalDateTime dataInicio, LocalDateTime dataFim, Materia materia) {
         this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
         this.materia = materia;
     }
 
