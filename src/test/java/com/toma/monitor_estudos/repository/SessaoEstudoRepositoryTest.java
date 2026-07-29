@@ -75,7 +75,7 @@ class SessaoEstudoRepositoryTest {
 
     @Test
     @DisplayName("deve retornar uma lista com 2 horários conflitantes")
-    void findConflitosHorarioShouldReturnTwoConflict(){
+    void findConflitosHorarioShouldReturnTwoConflicts(){
         Materia materia = createMateria();
         LocalDateTime inicioSessaoSalva = horario(10, 0);// 10:00
         LocalDateTime fimSessaoSalva = horario(13, 0);// 13:00
