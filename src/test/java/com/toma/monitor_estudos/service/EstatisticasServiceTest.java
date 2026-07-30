@@ -323,7 +323,7 @@ class EstatisticasServiceTest {
                 .findFirst()
                 .orElseThrow()
                 .tempoAcumuladoMinutos();
-        Assertions.assertEquals(240L, tempoEstruturaDados); 
+        Assertions.assertEquals(240L, tempoEstruturaDados);
 
         Mockito.verify(sessaoEstudoRepository).findByDataInicioBetween(
                 dataInicio.atStartOfDay(),

@@ -45,9 +45,10 @@ Incompatibility of Flyway standard dependency + Spring Boot 4
 - added validation for invalid time periods (end date before start date)
 - manual swagger tests passed
 - Implemented SessaoEstudoRepostory tests (@DataJpaTest, assertThat)
+- Implemented unit tests for all Service Layers (Mockito)
 
 ## Tomorrow
-- aprofundar em tests
+- Control layer tests
 ## Next Week
 
 - add and understand more unit tests
