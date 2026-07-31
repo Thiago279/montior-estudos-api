@@ -34,7 +34,7 @@
 
 Incompatibility of Flyway standard dependency + Spring Boot 4
 
-- solved by loooking up on google and found new Dependency to be injected
+- solved by looking up on google and found new Dependency to be injected
 
 
 # Semana 03
@@ -46,11 +46,28 @@ Incompatibility of Flyway standard dependency + Spring Boot 4
 - manual swagger tests passed
 - Implemented SessaoEstudoRepostory tests (@DataJpaTest, assertThat)
 - Implemented unit tests for all Service Layers (Mockito)
+- Implemented all Control layer tests, including global exception handler
 
-## Tomorrow
-- Control layer tests
+## Notes
+
+- Service layer tests were the most complicated
+    - use Mockito when to simulate injected dependencies expected method outcomes.
+    - Created private static final attributes to represent common and reused test variables
+    - Used auxiliary private constructors to avoid code repetition
+    - assertEquals, assertTrue, assertNotNull
+
+- Used MockMvc perform to simulate api endpoint request
+    - dummy controller class used to test GlobalExceptionHandler
+    - .andExpect
+
+- Repository tests require entity manager
+    - .persist(object)
+    - @DataJpaTest
+    - assertThat
+
+## Problems
+- tried to translate the few portuguese commit messages (3) into english, it changed all commit dates between the time period of the first Portuguese one to commited today, so I preferred to leave them in portuguese maintaining all correct commit dates.
+
 ## Next Week
-
-- add and understand more unit tests
 - CI/CD configuration with github actions
 - maybe dev , prod , test profiles
