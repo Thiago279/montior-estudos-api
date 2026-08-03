@@ -27,8 +27,8 @@
 - Documented all DTO schemas and error responses
 - Tested documentation via Swagger UI
 - Flyway Migrations
-- Validation of conflciting timezones eror handling
-- PATCH close study sesssion
+- Validation of conflicting timezones error handling
+- PATCH close study session
 
 ## Problems
 
