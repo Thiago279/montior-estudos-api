@@ -231,6 +231,12 @@ A esteira realiza:
 - execução da suíte de testes;
 - validação da integridade da aplicação antes da integração do código.
 
+<p align="center">
+  <img src="docs/assets/ActionsCI.png" alt="Histórico de Execuções do GitHub Actions" width="85%" style="border-radius: 6px;">
+  <br>
+  <sub><i>Execuções recentes do pipeline de CI/CD com validação de testes.</i></sub>
+</p>
+
 ## Documentação da API
 
 A API possui documentação interativa gerada automaticamente utilizando **SpringDoc OpenAPI (Swagger)**.
@@ -242,6 +248,16 @@ http://localhost:8080/swagger-ui/index.html
 ```
 
 Ela permite visualizar todos os endpoints disponíveis, modelos de requisição e resposta, além de realizar testes diretamente pelo navegador.
+
+
+<!-- Seção: Histórico de Execuções -->
+<p align="center">
+  <img src="docs/assets/SwaggerEndpoints.png" alt="Endpoints interativos na documentação Swagger" width="85%" style="border-radius: 6px;">
+  <br>
+  <sub><i>Endpoints interativos com Swagger.</i></sub>
+</p>
+
+
 
 
 ## Roadmap

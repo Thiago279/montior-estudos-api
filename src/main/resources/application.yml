@@ -5,9 +5,8 @@ spring:
   jackson:
     time-zone: America/Sao_Paulo
 
-  springdoc:
-    api-docs:
-      path: /v3/api-docs
-
-    swagger-ui:
-      path: /swagger-ui.html
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
