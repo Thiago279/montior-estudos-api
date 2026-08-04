@@ -68,6 +68,29 @@ Incompatibility of Flyway standard dependency + Spring Boot 4
 ## Problems
 - tried to translate the few portuguese commit messages (3) into english, it changed all commit dates between the time period of the first Portuguese one to commited today, so I preferred to leave them in portuguese maintaining all correct commit dates.
 
+
+
+# Semana 04
+
+## DONE
+- Implemented CI with github actions.
+- Implemented application-dev profile
+
+
+## Notes
+
+- CI implemented thorugh creation of .yml in .github/worflows (root of repo)
+    - implemented tests whenever push / pull on main branch to github
+- Moved most of application.properties to dev profile (datasource, jpa, flyway)
+    -  now standar run in IntelliJ runs in dev profile (added environmental variable to run config)
+
+## Problems
+- Initial CI config caused a bunch of errors 
+    - had to add @ActiveProfile("test") to main (MonitorEstudosApplicationTests)test class
+
+
+
 ## Next Week
-- CI/CD configuration with github actions
-- maybe dev , prod , test profiles
+- initial prod profile
+- README for backend
+- Frontend

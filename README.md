@@ -11,4 +11,7 @@ API REST para monitoramento de sessões de estudo.
 
 ## Status
 
-Versão atual: v0.1.0
+Versão atual: v0.4.0
+
+![Build](https://github.com/SEU_USUARIO/SEU_REPOSITORIO/actions/workflows/ci.yml/badge.svg)
+
