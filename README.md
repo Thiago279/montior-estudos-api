@@ -7,7 +7,7 @@ Backend REST desenvolvido com **Spring Boot** para gerenciamento de sessões de 
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-4169E1?logo=postgresql)
 ![Flyway](https://img.shields.io/badge/Flyway-Database_Migrations-CC0200?logo=flyway)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
-![Build Status](https://github.com/Thiago279/montioramento-estudos/actions/workflows/ci.yml/badge.svg)
+![Build Status](https://github.com/Thiago279/montior-estudos-api/actions/workflows/ci.yml/badge.svg)
 
 # Sobre o projeto
 
