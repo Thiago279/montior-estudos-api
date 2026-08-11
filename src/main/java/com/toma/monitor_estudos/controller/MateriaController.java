@@ -28,6 +28,30 @@ public class MateriaController {
         this.materiaService = materiaService;
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualiza uma matéria (a partir do id)", description = "Atualiza uma matéria com base nos dados fornecidos no corpo da requisição. (titulo e cor)")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Matéria atualizada com sucesso"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Dados de entrada inválidos",
+                    content = @Content(schema = @Schema(implementation = ErroResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Matéria não encontrada",
+                    content = @Content(schema = @Schema(implementation = ErroResponse.class))
+            )
+    })
+    public ResponseEntity<MateriaResponse> atualizar(
+            @PathVariable Long id,
+            @RequestBody @Valid MateriaRequest request) {
+        MateriaResponse response = materiaService.atualizar(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
     @PostMapping
     @Operation(summary = "Cria uma nova matéria", description = "Cria uma nova matéria com base nos dados fornecidos no corpo da requisição. (titulo e cor)")
     @ApiResponses({
@@ -39,7 +63,7 @@ public class MateriaController {
                     responseCode = "400",
                     description = "Dados de entrada inválidos",
                     content = @Content(schema = @Schema(implementation = ErroResponse.class))
-    )
+            )
     })
     public ResponseEntity<MateriaResponse> criar(@RequestBody @Valid MateriaRequest request) {
         MateriaResponse response = materiaService.salvar(request);

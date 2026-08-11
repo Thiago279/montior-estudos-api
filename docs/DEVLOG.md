@@ -85,12 +85,24 @@ Incompatibility of Flyway standard dependency + Spring Boot 4
     -  now standar run in IntelliJ runs in dev profile (added environmental variable to run config)
 
 ## Problems
-- Initial CI config caused a bunch of errors 
+- Initial CI config caused a bunch of errors
     - had to add @ActiveProfile("test") to main (MonitorEstudosApplicationTests)test class
 
+# Semana 05
+- Added complete readme documentation of the project
+- Started front end with angular
 
+# Semana 06
 
-## Next Week
-- initial prod profile
-- README for backend
-- Frontend
+## DONE
+- Configured CORS for Angular frontend integration.
+
+## Notes
+- Integrated frontend running on `http://localhost:4200` with Spring Boot backend on `http://localhost:8080`.
+- Added global CORS configuration via `WebMvcConfigurer` implementation (`WebConfig` class) allowing `http://localhost:4200` origins and standard HTTP methods (`GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`).
+- Annotated `MateriaController` with `@CrossOrigin(origins = "http://localhost:4200")` for explicit route mapping.
+
+## Problems
+- Initial request from Angular returned `status 0 / net::ERR_FAILED` due to CORS blocking.
+- Browser triggered an unhandled `NoResourceFoundException` for `/favicon.ico` which was caught by `GlobalExceptionHandler` returning HTTP 500.
+    - Resolved endpoint URL alignment from `/materias` to `/monitor-estudos/materias`.

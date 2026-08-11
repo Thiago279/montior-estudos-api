@@ -135,40 +135,47 @@ class MateriaServiceTest {
         Mockito.verify(materiaRepository).findAll();
     }
 
-    // ==================== BUSCAR POR ID ====================
+    // ==================== ATUALIZAR POR ID ====================
 
     @Test
     @DisplayName("Deve retornar a entidade Materia quando o ID for encontrado")
-    void buscarPorIdSuccess() {
+    void AtalizarPorIdSuccess() {
         // Arrange
         Materia materia = materiaPadrao();
+        MateriaRequest request = new MateriaRequest(OUTRO_TITULO,OUTRA_COR);
+        Materia materiaAtualiada = createMateria(ID_PADRAO, OUTRO_TITULO, OUTRA_COR);
+
 
         Mockito.when(materiaRepository.findById(ID_PADRAO))
                 .thenReturn(Optional.of(materia));
+        Mockito.when(materiaRepository.save(Mockito.any(Materia.class)))
+                .thenReturn(materiaAtualiada);
 
         // Act
-        Materia response = materiaService.buscarPorId(ID_PADRAO);
+        MateriaResponse response = materiaService.atualizar(ID_PADRAO, request);
 
         // Assert
         Assertions.assertNotNull(response);
-        Assertions.assertEquals(ID_PADRAO, response.getId());
-        Assertions.assertEquals(TITULO_PADRAO, response.getTitulo());
+        Assertions.assertEquals(ID_PADRAO, response.id());
+        Assertions.assertEquals(OUTRO_TITULO, response.titulo());
+        Assertions.assertEquals(OUTRA_COR, response.cor());
 
         Mockito.verify(materiaRepository).findById(ID_PADRAO);
     }
 
     @Test
     @DisplayName("Deve lançar EntityNotFoundException quando o ID da matéria não for encontrado")
-    void buscarPorIdThrowsEntityNotFoundException() {
+    void atualizarThrowsEntityNotFoundException() {
         // Arrange
         Long idInexistente = 99L;
+        MateriaRequest request = new MateriaRequest(TITULO_PADRAO,COR_PADRAO);
         Mockito.when(materiaRepository.findById(idInexistente))
                 .thenReturn(Optional.empty());
 
         // Act & Assert
         EntityNotFoundException thrown = Assertions.assertThrows(
                 EntityNotFoundException.class,
-                () -> materiaService.buscarPorId(idInexistente)
+                () -> materiaService.atualizar(idInexistente, request)
         );
 
         Assertions.assertEquals("Matéria não encontrada com ID: " + idInexistente, thrown.getMessage());

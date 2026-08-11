@@ -31,6 +31,17 @@ public class MateriaService {
         Materia materiaSalva = materiaRepository.save(materia);
         return mapearParaResponse(materiaSalva);
     }
+    @Transactional
+    public MateriaResponse atualizar(Long id, MateriaRequest request){
+        Materia materia = buscarPorId(id);
+        materia.setTitulo(request.titulo());
+
+        if (request.cor() != null && !request.cor().isBlank()) {
+            materia.setCor(request.cor());
+        }
+        Materia materiaSalva = materiaRepository.save(materia);
+        return mapearParaResponse(materiaSalva);
+    }
 
     public List<MateriaResponse> listarTodas() {
         return materiaRepository.findAll()
@@ -39,7 +50,7 @@ public class MateriaService {
                 .toList();
     }
 
-    public Materia buscarPorId(Long id) {
+    private Materia buscarPorId(Long id) {
         return materiaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Matéria não encontrada com ID: " + id));
     }
