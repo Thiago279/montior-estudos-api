@@ -88,7 +88,7 @@ class EstatisticasServiceTest {
                 materiaDois
         );
 
-        Mockito.when(sessaoEstudoRepository.findByDataInicioBetween(any(), any()))
+        Mockito.when(sessaoEstudoRepository.findSessoesNoIntervalo(any(), any()))
                 .thenReturn(List.of(sessaoEstudo, sessaoEstudoDois));
 
         // Act
@@ -100,7 +100,7 @@ class EstatisticasServiceTest {
         Assertions.assertEquals(2, response.sessoes().size());
         Assertions.assertEquals(tempoTotalEsperadoMinutos, response.tempoTotalMinutos());
 
-        Mockito.verify(sessaoEstudoRepository).findByDataInicioBetween(
+        Mockito.verify(sessaoEstudoRepository).findSessoesNoIntervalo(
                 DIA_PADRAO.atStartOfDay(),
                 DIA_PADRAO.atTime(LocalTime.MAX)
         );
@@ -125,7 +125,7 @@ class EstatisticasServiceTest {
                 materiaDois
         );
 
-        Mockito.when(sessaoEstudoRepository.findByDataInicioBetween(any(), any()))
+        Mockito.when(sessaoEstudoRepository.findSessoesNoIntervalo(any(), any()))
                 .thenReturn(List.of(sessaoEstudo, sessaoEstudoDois));
 
         // Act
@@ -139,7 +139,7 @@ class EstatisticasServiceTest {
         Assertions.assertEquals(StatusSessao.EM_ANDAMENTO, response.sessoes().get(1).status());
         Assertions.assertNull(response.sessoes().get(1).horaFim());
 
-        Mockito.verify(sessaoEstudoRepository).findByDataInicioBetween(
+        Mockito.verify(sessaoEstudoRepository).findSessoesNoIntervalo(
                 DIA_PADRAO.atStartOfDay(),
                 DIA_PADRAO.atTime(LocalTime.MAX)
         );
@@ -149,7 +149,7 @@ class EstatisticasServiceTest {
     @DisplayName("Deve retornar estatística diária zerada quando não houver sessões no dia")
     void obterEstatisticaDiariaShouldReturnZeroWhenNoSessoes() {
         // Arrange
-        Mockito.when(sessaoEstudoRepository.findByDataInicioBetween(any(), any()))
+        Mockito.when(sessaoEstudoRepository.findSessoesNoIntervalo(any(), any()))
                 .thenReturn(List.of());
 
         // Act
@@ -161,7 +161,7 @@ class EstatisticasServiceTest {
         Assertions.assertEquals(0, response.sessoes().size());
         Assertions.assertEquals(0, response.tempoTotalMinutos());
 
-        Mockito.verify(sessaoEstudoRepository).findByDataInicioBetween(
+        Mockito.verify(sessaoEstudoRepository).findSessoesNoIntervalo(
                 DIA_PADRAO.atStartOfDay(),
                 DIA_PADRAO.atTime(LocalTime.MAX)
         );
@@ -188,7 +188,7 @@ class EstatisticasServiceTest {
                 materiaDois
         );
 
-        Mockito.when(sessaoEstudoRepository.findByDataInicioBetween(any(), any()))
+        Mockito.when(sessaoEstudoRepository.findSessoesNoIntervalo(any(), any()))
                 .thenReturn(List.of(sessaoEstudoTerca, sessaoEstudoQuinta));
 
         // Act
@@ -217,7 +217,7 @@ class EstatisticasServiceTest {
         Assertions.assertEquals(240L, diaQuinta.tempoTotalMinutos());
         Assertions.assertEquals(TITULO_OUTRA_MATERIA, diaQuinta.materias().get(0).materiaTitulo());
 
-        Mockito.verify(sessaoEstudoRepository).findByDataInicioBetween(
+        Mockito.verify(sessaoEstudoRepository).findSessoesNoIntervalo(
                 LocalDate.of(2026, 7, 27).atStartOfDay(),
                 LocalDate.of(2026, 8, 2).atTime(LocalTime.MAX)
         );
@@ -227,7 +227,7 @@ class EstatisticasServiceTest {
     @DisplayName("Deve assumir a semana atual quando a data for nula")
     void obterEstatisticaSemanalWhenDataIsNull() {
         // Arrange
-        Mockito.when(sessaoEstudoRepository.findByDataInicioBetween(any(), any()))
+        Mockito.when(sessaoEstudoRepository.findSessoesNoIntervalo(any(), any()))
                 .thenReturn(List.of());
 
         LocalDate segundaAtualEsperada = LocalDate.now().with(DayOfWeek.MONDAY);
@@ -243,7 +243,7 @@ class EstatisticasServiceTest {
         Assertions.assertEquals(7, response.dias().size());
         Assertions.assertEquals(0L, response.tempoTotalMinutos());
 
-        Mockito.verify(sessaoEstudoRepository).findByDataInicioBetween(
+        Mockito.verify(sessaoEstudoRepository).findSessoesNoIntervalo(
                 segundaAtualEsperada.atStartOfDay(),
                 domingoAtualEsperado.atTime(LocalTime.MAX)
         );
@@ -296,7 +296,7 @@ class EstatisticasServiceTest {
                 materiaUm
         ); // 420 min - Java Backend
 
-        Mockito.when(sessaoEstudoRepository.findByDataInicioBetween(any(), any()))
+        Mockito.when(sessaoEstudoRepository.findSessoesNoIntervalo(any(), any()))
                 .thenReturn(List.of(sessaoEstudo, sessaoEstudoDois, sessaoEstudoTres));
 
         // Act
@@ -325,7 +325,7 @@ class EstatisticasServiceTest {
                 .tempoAcumuladoMinutos();
         Assertions.assertEquals(240L, tempoEstruturaDados);
 
-        Mockito.verify(sessaoEstudoRepository).findByDataInicioBetween(
+        Mockito.verify(sessaoEstudoRepository).findSessoesNoIntervalo(
                 dataInicio.atStartOfDay(),
                 dataFim.atTime(LocalTime.MAX)
         );
@@ -338,7 +338,7 @@ class EstatisticasServiceTest {
         LocalDate dataInicio = DIA_PADRAO; // 2026-07-28
         LocalDate dataFimEsperada = LocalDate.now();
 
-        Mockito.when(sessaoEstudoRepository.findByDataInicioBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
+        Mockito.when(sessaoEstudoRepository.findSessoesNoIntervalo(any(LocalDateTime.class), any(LocalDateTime.class)))
                 .thenReturn(List.of());
 
         // Act
@@ -351,7 +351,7 @@ class EstatisticasServiceTest {
         Assertions.assertEquals(0, response.quantidadeSessoes());
         Assertions.assertEquals(0L, response.tempoTotalMinutos());
 
-        Mockito.verify(sessaoEstudoRepository).findByDataInicioBetween(
+        Mockito.verify(sessaoEstudoRepository).findSessoesNoIntervalo(
                 Mockito.eq(dataInicio.atStartOfDay()),
                 any(LocalDateTime.class)
         );

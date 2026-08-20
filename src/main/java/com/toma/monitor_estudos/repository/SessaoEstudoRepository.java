@@ -13,6 +13,16 @@ public interface SessaoEstudoRepository extends JpaRepository<SessaoEstudo, Long
 
     List<SessaoEstudo> findByDataInicioBetween(LocalDateTime inicio, LocalDateTime fim);
 
+    @Query("""
+    SELECT s FROM SessaoEstudo s
+    WHERE s.dataInicio <= :fim
+      AND (s.dataFim IS NULL OR s.dataFim >= :inicio)
+""")
+    List<SessaoEstudo> findSessoesNoIntervalo(
+            @Param("inicio") LocalDateTime inicio,
+            @Param("fim") LocalDateTime fim
+    );
+
     Optional<SessaoEstudo> findByDataFimIsNull();
 
     @Query("""

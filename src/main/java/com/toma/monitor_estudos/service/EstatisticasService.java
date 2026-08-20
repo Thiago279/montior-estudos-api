@@ -39,11 +39,11 @@ public class EstatisticasService {
         LocalDateTime agora = LocalDateTime.now();
 
         // Busca todas as sessões que iniciaram dentro dessa data
-        List<SessaoEstudo> sessoes = sessaoEstudoRepository.findByDataInicioBetween(inicioDia, fimDia);
+        List<SessaoEstudo> sessoes = sessaoEstudoRepository.findSessoesNoIntervalo(inicioDia, fimDia);
 
         // Mapeia cada sessão da entidade para o DTO de resumo
         List<SessaoResumoResponse> sessoesResumo = sessoes.stream()
-                .map(sessao -> mapearParaResumo(sessao, agora))
+                .map(sessao -> mapearParaResumo(sessao,inicioDia, fimDia, agora))
                 .toList();
 
         // Calcula a soma total de minutos de todas as sessões do dia
@@ -69,7 +69,7 @@ public class EstatisticasService {
 
         LocalDateTime agora = LocalDateTime.now();
 
-        List<SessaoEstudo> sessoes = sessaoEstudoRepository.findByDataInicioBetween(inicioPeriodo, fimPeriodo);
+        List<SessaoEstudo> sessoes = sessaoEstudoRepository.findSessoesNoIntervalo(inicioPeriodo, fimPeriodo);
 
         long tempoTotalSemana = sessoes.stream()
                 .mapToLong(sessao -> calcularMinutosSessao(sessao, agora))
@@ -108,7 +108,7 @@ public class EstatisticasService {
                         ? LocalDateTime.now()
                         : dataFim.atTime(LocalTime.MAX);
 
-        List<SessaoEstudo> sessoes = sessaoEstudoRepository.findByDataInicioBetween(inicioPeriodo, fimPeriodo);
+        List<SessaoEstudo> sessoes = sessaoEstudoRepository.findSessoesNoIntervalo(inicioPeriodo, fimPeriodo);
 
         long tempoTotalPeriodo = sessoes.stream()
                 .mapToLong(sessao -> calcularMinutosSessao(sessao, agora))
@@ -127,22 +127,29 @@ public class EstatisticasService {
         );
     }
 
-    private SessaoResumoResponse mapearParaResumo(SessaoEstudo sessao, LocalDateTime agora) {
+    private SessaoResumoResponse mapearParaResumo(
+            SessaoEstudo sessao,
+            LocalDateTime inicioDia,
+            LocalDateTime fimDia,
+            LocalDateTime agora) {
         boolean emAndamento = sessao.getDataFim() == null;
         StatusSessao status = emAndamento ? StatusSessao.EM_ANDAMENTO : StatusSessao.FINALIZADA;
 
-        LocalDateTime pontoFinalCalculo = emAndamento ? agora : sessao.getDataFim();
+        LocalDateTime pontoFinalReal = emAndamento ? agora : sessao.getDataFim();
 
-        long duracaoMinutos = Duration.between(sessao.getDataInicio(), pontoFinalCalculo).toMinutes();
+        LocalDateTime inicioEfetivo = sessao.getDataInicio().isBefore(inicioDia) ? inicioDia : sessao.getDataInicio();
+        LocalDateTime fimEfetivo = pontoFinalReal.isAfter(fimDia) ? fimDia : pontoFinalReal;
 
-        LocalTime horaFim = emAndamento ? null : sessao.getDataFim().toLocalTime();
+        long duracaoMinutos = Duration.between(inicioEfetivo, fimEfetivo).toMinutes();
+
+        LocalTime horaFim = emAndamento ? null : fimEfetivo.toLocalTime();
 
         return new SessaoResumoResponse(
                 sessao.getId(),
                 sessao.getMateria().getId(),
                 sessao.getMateria().getTitulo(),
                 sessao.getMateria().getCor(),
-                sessao.getDataInicio().toLocalTime(),
+                inicioEfetivo.toLocalTime(),
                 horaFim,
                 Math.max(0, duracaoMinutos), // Evita minutos negativos em casos atípicos
                 status
